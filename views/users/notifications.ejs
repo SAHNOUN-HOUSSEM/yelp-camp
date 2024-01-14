@@ -1,0 +1,13 @@
+<% layout("layouts/boilerplate") %>
+<div class="h-100 d-flex justify-content-center align-items-center">
+    <section class="text-center text-lg-start my-auto w-100">
+        <h1>Notifications</h1>
+        <div class="list-group mt-3">
+            <% for(let notification of allNotifications){ %>
+                <a href="/notifications/<%= notification._id %>" class="list-group-item list-group-item-action <%= notification.isRead ? "" : " active" %>">
+                    <%= notification.sender.username %> added a new campground: <%= notification.campground.title %>
+                </a>
+            <% } %>
+        </div>
+    </section>
+</div>

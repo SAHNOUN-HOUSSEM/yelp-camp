@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yelp Camp</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/campgrounds/map.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+</head>
+
+<body class="d-flex text-center text-white bg-dark">
+    <div class="cover-container d-flex w-100 h-100 p-3  flex-column">
+        <header class="mb-auto">
+            <div class="d-flex">
+                <h3 class="float-md-left mb-0 me-auto">YelpCamp</h3>
+                <nav class="nav nav-masthead justify-content-center float-md-right">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link" href="/campgrounds">Campgrounds</a>
+                    <% if(!currentUser) { %>
+                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="/register">Register</a>
+                        <% } else { %>
+                            <form action="/logout" method="POST">
+                                <button class="nav-link">Log out</button>
+                            </form>
+                            <% } %>
+                </nav>
+            </div>
+        </header>
+        <main class="">
+            <div id='map' style='width: auto; height: 85vh; margin-top: 0;' class="row"></div>
+        </main>
+
+        <footer class="mt-auto text-white-50">
+            <p>&copy; Yelp Camp </p>
+        </footer>
+
+
+    </div>
+    <script>
+        const mbxAccessToken = '<%- process.env.mapbox_access_token %>'
+        const campgrounds = <%- JSON.stringify(campgrounds) %>
+    </script>
+    <script src="/js/indexPageMap.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>

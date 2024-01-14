@@ -1,0 +1,58 @@
+<% layout("layouts/boilerplate") %>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+<link rel="stylesheet" href="/css/stars.css">
+<section>
+    <div class="container m-0 p-0">
+        <h4 class="mb-0">Reviews</h4>
+        <p class="fw-light mb-4 pb-2">for <%= campground.title %></p>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="card text-dark reviews-container">
+                    <% for(let review of reviews){ %>
+                        <div class="card-body p-4 border-bottom">
+                            <div class="d-flex flex-start">
+                                <img class="rounded-circle shadow-1-strong me-3"
+                                    src="https://loremflickr.com/640/480/nature?lock=814018635759616" alt="avatar"
+                                    width="60" height="60" />
+                                <div>
+                                    <h6 class="fw-bold mb-1"><%= review.owner.username %></h6>
+                                    <div>
+                                        <p class="mb-0">
+                                            March 07, 2021
+                                        </p>
+                                        <p class="starability-result mb-0" data-rating="<%= review.rating %>">
+                                            Rated: <%= review.rating %> stars
+                                        </p>
+                                    </div>
+                                    <p class="mb-0">
+                                        <%= review.text %>
+                                    </p>
+                                </div>
+                            </div>
+                            <% if (currentUser && currentUser.equals(review.owner)) { %>
+                                <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <!-- ******************************
+            IFINITE SCROLL USING BUTTON
+            ****************************** -->
+            <!-- <% if (totalPages>1) { %>             
+                <button class="btn btn-outline-primary loader mt-4" >
+                    View more
+                </button>
+            <% } %> -->
+        </div>
+    </div>
+</section>
+<script>
+    let currentPage = 1;
+    const totalPages = '<%- totalPages %>';
+    let campground = <%- JSON.stringify(campground) %>;
+    let currentUser = <%- JSON.stringify(currentUser) %>;
+</script>
+<script src="/js/campgrounds/infiniteScrollReviews.js"></script>

@@ -1,0 +1,111 @@
+<% layout("layouts/boilerplate") %>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <img src="<%= user.avatar.url %>" alt="avatar" class="rounded-circle img-fluid"
+                        style="width: 150px;">
+                    <h5 class="my-3">
+                        <%= user.username %>
+                    </h5>
+                    <p class="text-muted mb-1">
+                        <%= user.isAdmin ? "admin" : "user" %>
+                    </p>
+                    <p class="text-muted mb-4">
+                        <%= user.address.toString() %>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Full Name</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">
+                                <%= user.fullname %>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Email</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">
+                                <%= user.email %>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Phone</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">
+                                <%= user.phone %>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Address</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">
+                                <%= user.address.toString() %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if (currentUser){ %>
+                <% if(currentUser.equals(user._id)){ %>
+                    <div class="row ">
+                        <div class="col-sm-3">
+                            <a href="/users/<%= user._id %>/edit" class="btn btn-outline-primary btn-block">Edit</a>
+                        </div>
+                        <div class="col-sm-3">
+                            <a href="/change-password/<%= user._id %>" class="btn btn-outline-primary btn-block">Change password</a>
+                        </div>
+                    </div>
+                <% }else if(!user.followers.find(follower => currentUser.equals(follower))){ %>
+                    <div class="row ">
+                        <form action="/follow/<%= user._id %>" method="POST" class="form-inline col-sm-3">
+                            <button href="/users/<%= user._id %>/edit" class="btn btn-outline-primary btn-block">Follow</button>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card mb-4 mb-md-0">
+            <div class="card-body">
+                <p class="mb-4">
+                    <span class="text-primary font-italic me-1">Posted campgrounds</span>
+                </p>
+                <div class="d-flex justify-content-between flex-wrap">
+                    <% for( let campground of campgrounds ) { %>
+                        <div class="card mb-2" style="width: 18rem;">
+                            <img src="<%= campground.images[0].url %>" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <%= campground.title %>
+                                </h5>
+                                <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More info</a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

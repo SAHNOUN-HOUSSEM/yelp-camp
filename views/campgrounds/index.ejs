@@ -1,0 +1,101 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/stars.css">
+<div class="row">
+    <div class="col-10 offset-1">
+        <h1>
+            All campgrounds
+        </h1>
+        <div class="row mb-1">
+            <h3>
+                <a href="/campgrounds/map" class="link-info mb-5 ">View in map</a>
+            </h3>
+        </div>
+        <form action="/campgrounds" method="GET" class="my-2 d-flex fleow fx-rlex-wrap ">
+            <div class="ms-auto ">
+                <select name="limit" class="form-select">
+                    <option value="null" <%= !limit  ? "selected" : "" %>>Campgrounds per page</option>
+                    <option value="5" <%= limit && limit == 5 ? "selected" : "" %> >5</option>
+                    <option value="10" <%= limit && limit == 10 ? "selected" : "" %> >10</option>
+                    <option value="20" <%= limit && limit == 20 ? "selected" : "" %> >20</option>
+                </select>
+            </div>
+            <!-- <input type="hidden" name="limit" value="<%= limit || 5 %>"> -->
+            <div class="ms-1 ">
+                <select name="sort" class="form-select"  >
+                    <option value="null"  <%= !sort  ? "selected" : "" %> >Sort By</option>
+                    <option value="title" <%= sort && sort == "title" ? "selected" : "" %> >Title</option>
+                    <option value="price" <%= sort && sort == "price" ? "selected" : "" %>>Price</option>
+                    <option value="rating" <%= sort && sort == "rating" ? "selected" : "" %>>Rating</option>
+                </select>
+            </div>
+            <input type="hidden" name="page" value="1">
+            <button name="sortDir"  value="<%= sort ? (-1)*sortDir : null %>" class="ms-1 btn btn-light" >&udarr;</button>
+            <div class="ms-1 d-flex flex-row flex-wrap ">
+                <input type="text" class="form-control w-auto" id="search" name="search" placeholder="Search">
+                <button class="btn btn-primary ms-2">Search</button>
+            </div>
+        </form>
+        <% if (noMatch) { %>
+            <h4><%= noMatch %></h4>
+        <% }else{ %>
+            <ul>
+                <% for(let campground of campgrounds){ %>
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="<%= campground.images[0]["url"] %>" class="card-img">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= campground.title %>
+                                    </h5>
+                                    <p class="card-text">
+                                        <%= campground.description %>
+                                    </p>
+                                    <p class="card-text">
+                                        $<%= campground.price %>
+                                    </p>
+                                    <p class="card-text">
+                                        <% if (campground.rating===0) { %>
+                                            Not rated
+                                        <% }else{ %>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <div class="starability-result mb-0 " data-rating="<%= Math.ceil(campground.rating) %>">
+                                                        Rated: <%= campground.rating %> stars
+                                                    </div>
+                                                </div>
+                                                <div class="ms-4 me-auto">
+                                                    <small class="text-body-secondary">
+                                                        (<%= campground.rating %>)
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </p>
+                                    <p class="card-text">
+                                        <small class="text-body-secondary">
+                                            location: <%= campground.location %>
+                                        </small>
+                                    </p>
+                                    <p class="card-text">
+                                        <small class="text-body-secondary">
+                                            submitted by: <%= campground.owner.username %>
+                                        </small>
+                                    </p>
+                                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">
+                                        See more
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%} %>
+            </ul>
+        <% } %>
+        <div class="row">
+            <%- include('../partials/campgroundsPagination') %>
+        </div>
+    </div>
+</div>
