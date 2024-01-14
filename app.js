@@ -3,7 +3,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const ExpressError = require("./utilities/ExpressError");
@@ -18,21 +17,17 @@ const {
 } = require("./middlewares/globalVariablesMiddleware");
 const authenticationRouter = require("./routes/authentication");
 const passport = require("passport");
-const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const mongoSanitize = require("express-mongo-sanitize");
 const { helmet } = require("./middlewares/helmet");
 const usersRouter = require("./routes/users");
 const notificationsRouter = require("./routes/notifications");
+const { dbConnect } = require("./config/dbConnect");
+const seedDB = require("./seeds");
 
-mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp");
+dbConnect();
 
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("Database connected");
-});
+seedDB();
 
 const app = express();
 
